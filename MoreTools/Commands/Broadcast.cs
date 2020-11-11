@@ -1,4 +1,6 @@
-﻿using Synapse.Command;
+﻿using Synapse.Api;
+using Synapse.Command;
+using System.Linq;
 
 namespace MoreTools.Commands
 {
@@ -15,7 +17,30 @@ namespace MoreTools.Commands
         public CommandResult Execute(CommandContext context)
         {
             var result = new CommandResult();
+            if (!context.Player.HasPermission("moretools.bc"))
+            {
+                result.Message = "You dont have Permission to execute this Command (moretools.bc)";
+                result.State = CommandResultState.NoPermission;
+                return result;
+            }
 
+            if(context.Arguments.Count < 2)
+            {
+                result.Message = "Missing Parameter! Usage: bc time message";
+                result.State = CommandResultState.Error;
+                return result;
+            }
+
+            if(!ushort.TryParse(context.Arguments.First(),out var time))
+            {
+                result.Message = "Invalid parameter for time";
+                result.State = CommandResultState.Error;
+                return result;
+            }
+
+            Map.Get.SendBroadcast(time, context.Arguments.ElementAt(1));
+            result.Message = "Broadcast was send";
+            result.State = CommandResultState.Ok;
             return result;
         }
     }
