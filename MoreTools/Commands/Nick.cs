@@ -18,7 +18,7 @@ namespace MoreTools.Commands
 
             if (!context.Player.HasPermission("moretools.nick"))
             {
-                result.Message = "You don't have permission to change your nickname!";
+                result.Message = "You dont have Permission to execute this Command (moretools.nick)";
                 result.State = CommandResultState.NoPermission;
                 return result;
             }
