@@ -23,15 +23,12 @@ namespace MoreTools.Commands
                 return result;
             }
 
-            if(context.Arguments.Count < 1)
-            {
-                result.Message = "Missing Parameter! Usage: .nick nickname";
-                result.State = CommandResultState.Error;
-            }
-
-
-            context.Player.DisplayName = context.Arguments.FirstElement();
-            result.Message = $"Your Nickname is now {context.Arguments.FirstElement()}";
+            var nick = string.Join(" ", context.Arguments);
+            context.Player.DisplayName = nick;
+            if (context.Arguments.Count > 0)
+                result.Message = $"Your Nickname is now {nick}";
+            else
+                result.Message = "Your Nickname has been removed!";
             result.State = CommandResultState.Ok;
             return result;
         }
