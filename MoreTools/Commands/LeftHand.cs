@@ -18,7 +18,7 @@ namespace MoreTools.Commands
 
             if (!context.Player.HasPermission("moretools.lefthand"))
             {
-                result.Message = "You dont have Permission to execute this Command (moretools.size)";
+                result.Message = "You dont have Permission to execute this Command (moretools.lefthand)";
                 result.State = CommandResultState.NoPermission;
                 return result;
             }

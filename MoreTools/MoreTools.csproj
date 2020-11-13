@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Broadcast.cs" />
+    <Compile Include="Commands\Suicide.cs" />
     <Compile Include="Commands\LeftHand.cs" />
     <Compile Include="Commands\Nick.cs" />
     <Compile Include="Commands\Unjail.cs" />
