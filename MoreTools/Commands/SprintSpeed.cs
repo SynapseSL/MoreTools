@@ -6,9 +6,9 @@ namespace MoreTools.Commands
 {
     [CommandInformation(
         Name = "SprintSpeed",
-        Aliases = new string[] { "rs" },
+        Aliases = new string[] { "ss" },
         Description = "A Command to change the SprintSpeed of all Players",
-        Permission = "moretools.runspeed",
+        Permission = "moretools.sprint",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
         Usage = "Walkspeed (speed)"
         )]
@@ -18,7 +18,7 @@ namespace MoreTools.Commands
         {
             var result = new CommandResult();
 
-            if (!context.Player.HasPermission("moretools.Sprintspeed"))
+            if (!context.Player.HasPermission("moretools.sprintspeed"))
             {
                 result.Message = "You dont have Permission to execute this Command (moretools.sprintspeed)";
                 result.State = CommandResultState.NoPermission;

@@ -1,7 +1,5 @@
-﻿using Synapse.Api;
-using Synapse.Command;
+﻿using Synapse.Command;
 using System.Linq;
-using System;
 
 namespace MoreTools.Commands
 {

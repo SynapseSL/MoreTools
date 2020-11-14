@@ -5,7 +5,7 @@ namespace MoreTools.Commands
     [CommandInformation(
         Name = "PrivateBroadcast",
         Aliases = new string[] { "pbc","pbroadcast" },
-        Description = "A Command which sends a Command to specific players",
+        Description = "A Command which sends a Broadcast to specific players",
         Permission = "moretools.pbc",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
         Usage = "pbc players time message"
