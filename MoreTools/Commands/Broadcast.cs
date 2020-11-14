@@ -38,7 +38,8 @@ namespace MoreTools.Commands
                 return result;
             }
 
-            Map.Get.SendBroadcast(time, context.Arguments.ElementAt(1));
+            var msg = string.Join(" ", context.Arguments.Segment(1));
+            Map.Get.SendBroadcast(time, msg);
             result.Message = "Broadcast was send";
             result.State = CommandResultState.Ok;
             return result;
