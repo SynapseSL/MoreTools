@@ -48,7 +48,7 @@ namespace MoreTools.Commands
             foreach (var ply in players)
                 ply.Position = player.Position;
 
-            result.Message = "All players have been brought to the player";
+            result.Message = "All players have been tp't to the player";
             result.State = CommandResultState.Ok;
             return result;
         }
