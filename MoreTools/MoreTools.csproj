@@ -73,6 +73,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Broadcast.cs" />
+    <Compile Include="Commands\PrivateHint.cs" />
+    <Compile Include="Commands\Hint.cs" />
     <Compile Include="Commands\PrivateBroadcast.cs" />
     <Compile Include="Commands\Suicide.cs" />
     <Compile Include="Commands\LeftHand.cs" />
