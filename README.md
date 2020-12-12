@@ -24,3 +24,4 @@ MoreTools is a plugin for Scp:SL that add a ton of new Command in order to manag
 | Walkspeed | ws | moretools.walkspeed | Changes the WalkSpeed for all Players |
 | Suicide | si | moretools.suicide | kills yourself |
 | Teleport | tp | moretools.tp | tp one player to an other |
+| Grenade | gn | moretools.grenade | Spawns a grenade at the position of a player |
