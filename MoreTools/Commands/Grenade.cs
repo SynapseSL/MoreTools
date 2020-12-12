@@ -49,7 +49,7 @@ namespace MoreTools.Commands
 
             foreach (var player in players)
                 for (int i = 0; i < amount; i++)
-                    Map.Get.SpawnGrenade(player.Position, Vector3.zero);
+                    Map.Get.SpawnGrenade(player.Position, Vector3.zero,3,Synapse.Api.Enum.GrenadeType.Grenade,context.Player);
 
             return new CommandResult
             {
