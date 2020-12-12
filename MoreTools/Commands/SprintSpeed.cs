@@ -8,7 +8,7 @@ namespace MoreTools.Commands
         Name = "SprintSpeed",
         Aliases = new string[] { "ss" },
         Description = "A Command to change the SprintSpeed of all Players",
-        Permission = "moretools.sprint",
+        Permission = "moretools.sprintspeed",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
         Usage = "Walkspeed (speed)"
         )]
