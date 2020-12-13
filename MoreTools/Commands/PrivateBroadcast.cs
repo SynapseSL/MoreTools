@@ -47,7 +47,10 @@ namespace MoreTools.Commands
             var msg = string.Join(" ", context.Arguments.Segment(2));
 
             foreach (var player in players)
+            {
                 player.SendBroadcast(time, msg);
+                player.GiveTextHint($"Private broadcast was send by {context.Player}");
+            }
 
             result.Message = "private broadcast was send";
             result.State = CommandResultState.Ok;

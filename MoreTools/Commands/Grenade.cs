@@ -10,7 +10,7 @@ namespace MoreTools.Commands
         Description = "Spawns grenades at the player location",
         Permission = "moretools.grenade",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Grenader players (optional amount)"
+        Usage = "Grenade players (optional amount)"
         )]
     public class Grenade : ISynapseCommand
     {
@@ -26,7 +26,7 @@ namespace MoreTools.Commands
             if (context.Arguments.Count < 1)
                 return new CommandResult
                 {
-                    Message = "Usage: Grenader players (optional amount)",
+                    Message = "Usage: Grenade players (optional amount)",
                     State = CommandResultState.Error
                 };
 
