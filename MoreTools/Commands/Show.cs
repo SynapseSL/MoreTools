@@ -15,35 +15,28 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.invisible"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.invisble)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             if (context.Arguments.Count < 1)
-            {
-                result.Message = "Missing Parameter! Usage: show players";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Missing Parameter! Usage: show players",
+                    State = CommandResultState.Error
+                };
 
             if (!Extensions.TryGetPlayers(context.Arguments.First(), context.Player, out var players))
-            {
-                result.Message = "No Player was found";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "No Player was found",
+                    State = CommandResultState.Error
+                };
 
             foreach (var player in players)
                 player.Invisible = true;
 
-            result.Message = "The Players are now Visible again";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "The Players are now Visible again",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

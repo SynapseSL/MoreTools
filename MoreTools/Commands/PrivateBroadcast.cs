@@ -14,35 +14,26 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.pbc"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.pbc)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
-            if(context.Arguments.Count < 3)
-            {
-                result.Message = "Missing Parameters! Usage: pbc players time message";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+            if (context.Arguments.Count < 3)
+                return new CommandResult
+                {
+                    Message = "Missing Parameters! Usage: pbc players time message",
+                    State = CommandResultState.Error
+                };
 
             if (!Extensions.TryGetPlayers(context.Arguments.FirstElement(), context.Player, out var players))
-            {
-                result.Message = "No Player was found";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "No Player was found",
+                    State = CommandResultState.Error
+                };
 
-            if(!ushort.TryParse(context.Arguments.At(1),out var time))
-            {
-                result.Message = "Invalid time amount";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+            if (!ushort.TryParse(context.Arguments.At(1), out var time))
+                return new CommandResult
+                {
+                    Message = "Invalid time amount",
+                    State = CommandResultState.Error
+                };
 
             var msg = string.Join(" ", context.Arguments.Segment(2));
 
@@ -52,9 +43,11 @@ namespace MoreTools.Commands
                 player.GiveTextHint($"Private broadcast was send by {context.Player}");
             }
 
-            result.Message = "private broadcast was send";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "private broadcast was send",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

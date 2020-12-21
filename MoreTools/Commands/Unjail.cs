@@ -15,35 +15,28 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.jail"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.jail)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             if (context.Arguments.Count < 1)
-            {
-                result.Message = "Missing Parameter! Usage: Unjail players";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Missing Parameter! Usage: Unjail players",
+                    State = CommandResultState.Error
+                };
 
             if (!Extensions.TryGetPlayers(context.Arguments.First(), context.Player, out var players))
-            {
-                result.Message = "No Player was found!";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "No Player was found!",
+                    State = CommandResultState.Error
+                };
 
             foreach (var player in players)
                 player.Jail.UnJailPlayer();
 
-            result.Message = "Players are unjailed";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "Players are unjailed",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

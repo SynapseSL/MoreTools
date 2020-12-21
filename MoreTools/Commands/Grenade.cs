@@ -16,13 +16,6 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            if (!context.Player.HasPermission("moretools.grenade"))
-                return new CommandResult
-                {
-                    Message = "You dont have Permission to execute this Command (moretools.)",
-                    State = CommandResultState.NoPermission,
-                };
-
             if (context.Arguments.Count < 1)
                 return new CommandResult
                 {

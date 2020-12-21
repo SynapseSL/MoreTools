@@ -14,19 +14,12 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.suicide"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.suicide)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             context.Player.Kill();
-            result.Message = "You have killed yourself";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "You have killed yourself",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

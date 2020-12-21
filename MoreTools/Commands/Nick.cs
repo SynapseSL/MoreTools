@@ -16,13 +16,6 @@ namespace MoreTools.Commands
         {
             var result = new CommandResult();
 
-            if (!context.Player.HasPermission("moretools.nick"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.nick)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             var nick = string.Join(" ", context.Arguments);
             context.Player.DisplayName = nick;
             if (context.Arguments.Count > 0)

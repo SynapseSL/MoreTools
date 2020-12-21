@@ -14,36 +14,29 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.hint"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.hint)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             if (context.Arguments.Count < 2)
-            {
-                result.Message = "Missing Parameter! Usage: hint time message";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Missing Parameter! Usage: hint time message",
+                    State = CommandResultState.Error
+                };
 
             if (!float.TryParse(context.Arguments.FirstElement(), out var time))
-            {
-                result.Message = "Invalid parameter for time";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Invalid parameter for time",
+                    State = CommandResultState.Error
+                };
 
             var msg = string.Join(" ", context.Arguments.Segment(1));
             foreach (var ply in Synapse.Server.Get.Players)
                 ply.GiveTextHint(msg, time);
-            result.Message = "Hint was send";
-            result.State = CommandResultState.Ok;
 
-            return result;
+            return new CommandResult
+            {
+                Message = "Hint was send",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

@@ -1,40 +1,41 @@
 ﻿using Synapse.Command;
-using System.Linq;
 
 namespace MoreTools.Commands
 {
     [CommandInformation(
-        Name = "hide",
-        Aliases = new string[] { },
-        Description = "A Command to make Players Invisible",
-        Permission = "moretools.invisible",
+        Name = "Window",
+        Aliases = new string[] { "reportwindow" },
+        Description = "Opens the Report Window with a a Custom Message",
+        Permission = "moretools.window",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "hide players"
+        Usage = "Window players Message"
         )]
-    public class Hide : ISynapseCommand
+    public class Window : ISynapseCommand
     {
         public CommandResult Execute(CommandContext context)
         {
-            if (context.Arguments.Count < 1)
+            if (context.Arguments.Count < 2)
                 return new CommandResult
                 {
-                    Message = "Missing Parameter! Usage: hide players",
+                    Message = "Missing Parameter. Usage: Window players Message",
                     State = CommandResultState.Error
                 };
 
-            if (!Extensions.TryGetPlayers(context.Arguments.First(), context.Player, out var players))
+            if (!Extensions.TryGetPlayers(context.Arguments.At(0), context.Player, out var players))
                 return new CommandResult
                 {
                     Message = "No Player was found",
                     State = CommandResultState.Error
                 };
 
+            var message = string.Join(" ", context.Arguments.Segment(1));
+
             foreach (var player in players)
-                player.Invisible = false;
+                player.OpenReportWindow(message);
 
             return new CommandResult
             {
-                Message = "The Players are now Invisible",
+                Message = "Message was send",
                 State = CommandResultState.Ok
             };
         }

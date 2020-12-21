@@ -16,13 +16,6 @@ namespace MoreTools.Commands
         {
             var result = new CommandResult();
 
-            if (!context.Player.HasPermission("moretools.lefthand"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.lefthand)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             var size = context.Player.Scale;
             size.x = size.x * -1;
             context.Player.Scale = size;

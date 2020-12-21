@@ -14,44 +14,37 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.phd"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.phd)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             if (context.Arguments.Count < 3)
-            {
-                result.Message = "Missing Parameters! Usage: phd players time message";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Missing Parameters! Usage: phd players time message",
+                    State = CommandResultState.Error
+                };
 
             if (!Extensions.TryGetPlayers(context.Arguments.FirstElement(), context.Player, out var players))
-            {
-                result.Message = "No Player was found";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "No Player was found",
+                    State = CommandResultState.Error
+                };
 
             if (!float.TryParse(context.Arguments.At(1), out var time))
-            {
-                result.Message = "Invalid time amount";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Invalid time amount",
+                    State = CommandResultState.Error
+                };
 
             var msg = string.Join(" ", context.Arguments.Segment(2));
 
             foreach (var player in players)
                 player.GiveTextHint(msg, time);
 
-            result.Message = "private hint was send";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "private hint was send",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

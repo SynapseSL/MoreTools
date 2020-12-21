@@ -14,43 +14,36 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-
-            if (!context.Player.HasPermission("moretools.tp"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.tp)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
-
             if (context.Arguments.Count < 2)
-            {
-                result.Message = "Missing Parameters! Usage: tp players player";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "Missing Parameters! Usage: tp players player",
+                    State = CommandResultState.Error
+                };
 
             if (!Extensions.TryGetPlayers(context.Arguments.FirstElement(), context.Player, out var players))
-            {
-                result.Message = "No Player was found";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+                return new CommandResult
+                {
+                    Message = "No Player was found",
+                    State = CommandResultState.Error
+                };
 
             var player = SynapseController.Server.GetPlayer(context.Arguments.At(1));
-            if(player == null)
-            {
-                result.Message = "No player to tp to was found";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+            if (player == null)
+                return new CommandResult
+                {
+                    Message = "No player to tp to was found",
+                    State = CommandResultState.Error
+                };
 
             foreach (var ply in players)
                 ply.Position = player.Position;
 
-            result.Message = "All players have been tp't to the player";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "All players have been tp't to the player",
+                State = CommandResultState.Ok
+            };
         }
     }
 }

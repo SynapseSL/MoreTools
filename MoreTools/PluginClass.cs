@@ -6,11 +6,11 @@ namespace MoreTools
         Name = "MoreTools",
         Author = "Dimenzio",
         Description = "A Plugin which adds a ton of Tools and command to the game",
-        LoadPriority = int.MinValue,
+        LoadPriority = 0,
         SynapseMajor = 2,
-        SynapseMinor = 0,
-        SynapsePatch = 1,
-        Version = "v.1.1.0"
+        SynapseMinor = 4,
+        SynapsePatch = 0,
+        Version = "v.1.2.0"
         )]
     public class PluginClass : AbstractPlugin { }
 }

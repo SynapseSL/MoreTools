@@ -16,33 +16,27 @@ namespace MoreTools.Commands
     {
         public CommandResult Execute(CommandContext context)
         {
-            var result = new CommandResult();
-            if (!context.Player.HasPermission("moretools.bc"))
-            {
-                result.Message = "You dont have Permission to execute this Command (moretools.bc)";
-                result.State = CommandResultState.NoPermission;
-                return result;
-            }
+            if (context.Arguments.Count < 2)
+                return new CommandResult
+                {
+                    Message = "Missing Parameter! Usage: bc time message",
+                    State = CommandResultState.Error
+                };
 
-            if(context.Arguments.Count < 2)
-            {
-                result.Message = "Missing Parameter! Usage: bc time message";
-                result.State = CommandResultState.Error;
-                return result;
-            }
-
-            if(!ushort.TryParse(context.Arguments.First(),out var time))
-            {
-                result.Message = "Invalid parameter for time";
-                result.State = CommandResultState.Error;
-                return result;
-            }
+            if (!ushort.TryParse(context.Arguments.First(), out var time))
+                return new CommandResult
+                {
+                    Message = "Invalid parameter for time",
+                    State = CommandResultState.Error
+                };
 
             var msg = string.Join(" ", context.Arguments.Segment(1));
             Map.Get.SendBroadcast(time, msg);
-            result.Message = "Broadcast was send";
-            result.State = CommandResultState.Ok;
-            return result;
+            return new CommandResult
+            {
+                Message = "Broadcast was send",
+                State = CommandResultState.Ok
+            };
         }
     }
 }
