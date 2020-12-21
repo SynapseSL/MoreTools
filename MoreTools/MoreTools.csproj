@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Broadcast.cs" />
+    <Compile Include="Commands\Redirect.cs" />
     <Compile Include="Commands\Window.cs" />
     <Compile Include="Commands\Grenade.cs" />
     <Compile Include="Commands\Teleport.cs" />
