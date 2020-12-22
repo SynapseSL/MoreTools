@@ -30,7 +30,7 @@ namespace MoreTools.Commands
                 };
 
             foreach (var player in players)
-                player.Invisible = true;
+                player.Invisible = false;
 
             return new CommandResult
             {
