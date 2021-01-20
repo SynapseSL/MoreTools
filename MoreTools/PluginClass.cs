@@ -12,5 +12,9 @@ namespace MoreTools
         SynapsePatch = 0,
         Version = "v.1.2.0"
         )]
-    public class PluginClass : AbstractPlugin { }
+    public class PluginClass : AbstractPlugin 
+    {
+        [Config(section = "MoreTools")]
+        public static PluginConfig Config;
+    }
 }

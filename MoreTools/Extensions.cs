@@ -1,6 +1,9 @@
-﻿using Synapse;
+﻿using Grenades;
+using Mirror;
+using Synapse;
 using Synapse.Api;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace MoreTools
 {
@@ -50,6 +53,39 @@ namespace MoreTools
             playerList = players;
 
             return players.Count != 0;
+        }
+
+        public static Dictionary<Player, int> scp207Intus = new Dictionary<Player, int>();
+        public static void addSCP207(Player p)
+        {
+            if (scp207Intus.ContainsKey(p))
+                scp207Intus[p]++;
+            else
+                scp207Intus.Add(p, 1);
+        }
+
+        public static void resetSCP207(Player p)
+        {
+            if (scp207Intus.ContainsKey(p))
+                scp207Intus.Remove(p);
+        }
+
+        public static int getSCP207(Player p)
+        {
+            if (scp207Intus.ContainsKey(p))
+                return scp207Intus[p];
+            else
+                return 0;
+        }
+
+        public static void SpawnGrenadeOnPlayer(Player player)
+        {
+            GrenadeManager gm = player.gameObject.GetComponent<GrenadeManager>();
+            Grenade gnade = UnityEngine.Object.Instantiate(gm.availableGrenades[0].grenadeInstance.GetComponent<Grenade>());
+            gnade.fuseDuration = 1f;
+            gnade.FullInitData(gm, player.Position, Quaternion.Euler(gnade.throwStartAngle), gnade.throwLinearVelocityOffset, gnade.throwAngularVelocity, player.RealTeam);
+            for (int i = 0; i < PluginClass.Config.scp207NadeAmount; i++)
+                NetworkServer.Spawn(gnade.gameObject);
         }
     }
 }
