@@ -35,7 +35,7 @@ namespace MoreTools.Commands
             return new CommandResult
             {
                 Message = "WalkSpeed was changed!",
-                State = CommandResultState.Error
+                State = CommandResultState.Ok
             };
         }
     }
