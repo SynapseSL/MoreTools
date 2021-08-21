@@ -10,7 +10,7 @@ namespace MoreTools
         SynapseMajor = 2,
         SynapseMinor = 5,
         SynapsePatch = 3,
-        Version = "v.1.2.0"
+        Version = "v.1.2.1"
         )]
     public class PluginClass : AbstractPlugin { }
 }
