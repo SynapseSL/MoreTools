@@ -25,3 +25,7 @@ MoreTools is a plugin for Scp:SL that add a ton of new Command in order to manag
 | Suicide | si | moretools.suicide | kills yourself |
 | Teleport | tp | moretools.tp | tp one player to an other |
 | Grenade | gn | moretools.grenade | Spawns a grenade at the position of a player |
+| Flash | - | moretools.flash | Spawns a flash at the position of a player |
+| Ball | | - | moretools.ball | Spawns a ball at the position of a player |
+| Window | reportwindow | moretools.window | Opens a Window for the player with a message |
+| Redirect | rd | moretools.redirect | Forces the player to join on a other Server on the same machine with a different port |
