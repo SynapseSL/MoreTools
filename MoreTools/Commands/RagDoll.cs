@@ -6,7 +6,7 @@ namespace MoreTools.Commands
         Name = "Ragdoll",
         Aliases = new string[] { },
         Description = "Spawns Ragdolls",
-        Permission = "moretools.ragtool",
+        Permission = "moretools.ragdoll",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
         Usage = "Ragdoll player Role Amount"
         )]
