@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "brings players to a specific player",
         Permission = "moretools.tp",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "tp players player"
+        Usage = "tp players player",
+        Arguments = new[] { "Players", "Player" }
         )]
     public class Teleport : ISynapseCommand
     {

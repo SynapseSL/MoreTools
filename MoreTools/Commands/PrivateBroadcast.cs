@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "A Command which sends a Broadcast to specific players",
         Permission = "moretools.pbc",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "pbc players time message"
+        Usage = "pbc players time message",
+        Arguments = new[] { "Players", "Time", "Message" }
         )]
     public class PrivateBroadcast : ISynapseCommand
     {

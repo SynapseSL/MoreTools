@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "A Command which sends a hint to specific players",
         Permission = "moretools.phd",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "phd players time message"
+        Usage = "phd players time message",
+        Arguments = new[] { "Players", "Time", "Message"}
         )]
     public class PrivateHint : ISynapseCommand
     {

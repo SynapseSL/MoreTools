@@ -9,7 +9,8 @@ namespace MoreTools.Commands
         Description = "A Command to make Players Visible again",
         Permission = "moretools.invisible",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "show players"
+        Usage = "show players",
+        Arguments = new[] { "Players" }
         )]
     public class Show : ISynapseCommand
     {

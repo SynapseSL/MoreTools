@@ -10,7 +10,8 @@ namespace MoreTools.Commands
         Description = "A Command to send a Broadcast to all Players",
         Permission = "moretools.bc",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Bc time message"
+        Usage = "Bc time message",
+        Arguments = new[] { "Time", "Message" }
         )]
     public class Broadcast : ISynapseCommand
     {

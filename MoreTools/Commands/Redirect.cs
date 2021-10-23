@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "Forces the player to join on a other Server on the same machine with a different port",
         Permission = "moretools.redirect",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Redirect players port"
+        Usage = "Redirect players port",
+        Arguments = new[] { "Players", "Port"}
         )]
     public class Redirect : ISynapseCommand
     {

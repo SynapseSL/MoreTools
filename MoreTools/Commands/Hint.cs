@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "A Command to give all Players a Hint Message",
         Permission = "moretools.hint",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "hint time message"
+        Usage = "hint time message",
+        Arguments = new[] { "Time", "Message" }
         )]
     public class Hint : ISynapseCommand
     {

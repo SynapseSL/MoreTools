@@ -9,7 +9,8 @@ namespace MoreTools.Commands
         Description = "A Command for unjailing Players",
         Permission = "moretools.jail",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "unjail players"
+        Usage = "unjail players",
+        Arguments = new[] { "Players" }
         )]
     public class UnJail : ISynapseCommand
     {

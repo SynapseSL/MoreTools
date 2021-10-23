@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "Spawns Ragdolls",
         Permission = "moretools.ragdoll",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Ragdoll player Role Amount"
+        Usage = "Ragdoll player Role Amount",
+        Arguments = new[] { "Players", "Role", "Amount" }
         )]
     public class RagDoll : ISynapseCommand
     {
@@ -49,7 +50,7 @@ namespace MoreTools.Commands
                 {
                     var pos = ply.Position;
                     pos.y += 2;
-                    new Synapse.Api.Ragdoll((RoleType)role, pos, ply.transform.rotation, UnityEngine.Vector3.zero, new PlayerStats.HitInfo(), false, ply);
+                    new Synapse.Api.Ragdoll((RoleType)role, pos, ply.transform.rotation, UnityEngine.Vector3.zero, new PlayerStats.HitInfo(), false, ply.NickName);
                 }
 
             return new CommandResult

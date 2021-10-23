@@ -9,7 +9,8 @@ namespace MoreTools.Commands
         Description = "A Command to make Players Invisible",
         Permission = "moretools.invisible",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "hide players"
+        Usage = "hide players",
+        Arguments = new[] { "Players" }
         )]
     public class Hide : ISynapseCommand
     {

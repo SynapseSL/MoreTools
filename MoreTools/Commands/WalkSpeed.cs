@@ -10,7 +10,8 @@ namespace MoreTools.Commands
         Description = "A Command to change the WalkSpeed of all Players",
         Permission = "moretools.walkspeed",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Walkspeed (speed)"
+        Usage = "Walkspeed (speed)",
+        Arguments = new[] { "Speed" }
         )]
     public class WalkSpeed : ISynapseCommand
     {

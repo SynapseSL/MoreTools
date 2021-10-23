@@ -10,7 +10,8 @@ namespace MoreTools.Commands
         Description = "A Command to change the size of Players",
         Permission = "moretools.size",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "size players x y z"
+        Usage = "size players x y z",
+        Arguments = new[] { "Players", "X Size", "Y Size", "Z Size"}
         )]
     public class Size : ISynapseCommand
     {

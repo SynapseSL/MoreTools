@@ -10,7 +10,8 @@ namespace MoreTools.Commands
         Description = "Spawns flashes at the player location",
         Permission = "moretools.flash",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Flash players (optional amount)"
+        Usage = "Flash players (optional amount)",
+        Arguments = new[] { "Players", "(Amount)" }
         )]
     public class Flash : ISynapseCommand
     {

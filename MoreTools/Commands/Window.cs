@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "Opens the Report Window with a a Custom Message",
         Permission = "moretools.window",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Window players Message"
+        Usage = "Window players Message",
+        Arguments = new[] { "Players", "Message"}
         )]
     public class Window : ISynapseCommand
     {

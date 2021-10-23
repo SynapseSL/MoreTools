@@ -10,7 +10,8 @@ namespace MoreTools.Commands
         Description = "Spawns grenades at the player location",
         Permission = "moretools.ball",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Ball players (optional amount)"
+        Usage = "Ball players (optional amount)",
+        Arguments = new[] { "Players", "(Amount)" }
         )]
     public class Ball : ISynapseCommand
     {

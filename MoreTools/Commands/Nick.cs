@@ -8,7 +8,8 @@ namespace MoreTools.Commands
         Description = "A Command to change your Nickname",
         Permission = "moretools.nick",
         Platforms = new Platform[] { Platform.ClientConsole },
-        Usage = ".nick nickname"
+        Usage = ".nick nickname",
+        Arguments = new[] { "Nickname" }
         )]
     public class Nick : ISynapseCommand
     {

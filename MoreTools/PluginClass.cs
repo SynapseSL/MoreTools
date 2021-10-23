@@ -8,9 +8,9 @@ namespace MoreTools
         Description = "A Plugin which adds a ton of Tools and command to the game",
         LoadPriority = 0,
         SynapseMajor = 2,
-        SynapseMinor = 5,
-        SynapsePatch = 3,
-        Version = "v.1.2.1"
+        SynapseMinor = 7,
+        SynapsePatch = 1,
+        Version = "v.1.2.2"
         )]
     public class PluginClass : AbstractPlugin { }
 }
