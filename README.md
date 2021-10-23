@@ -29,3 +29,4 @@ MoreTools is a plugin for Scp:SL that add a ton of new Command in order to manag
 | Ball | | - | moretools.ball | Spawns a ball at the position of a player |
 | Window | reportwindow | moretools.window | Opens a Window for the player with a message |
 | Redirect | rd | moretools.redirect | Forces the player to join on a other Server on the same machine with a different port |
+| Ragdoll | - | moretools.ragdoll | Spawns Ragdolls |
