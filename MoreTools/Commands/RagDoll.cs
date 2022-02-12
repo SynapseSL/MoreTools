@@ -1,4 +1,5 @@
-﻿using Synapse.Command;
+﻿using Synapse.Api.Enum;
+using Synapse.Command;
 
 namespace MoreTools.Commands
 {
@@ -9,7 +10,7 @@ namespace MoreTools.Commands
         Permission = "moretools.ragdoll",
         Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
         Usage = "Ragdoll player Role Amount",
-        Arguments = new[] { "Players", "Role", "Amount" }
+        Arguments = new[] { "Players", "Role", "Amount", "Name" }
         )]
     public class RagDoll : ISynapseCommand
     {
@@ -30,6 +31,7 @@ namespace MoreTools.Commands
 
             var role = 0;
             var amount = 1;
+            var name = "RagDoll";
             if (context.Arguments.Count > 1)
                 if (!int.TryParse(context.Arguments.At(1), out role)) return new CommandResult
                 {
@@ -45,12 +47,16 @@ namespace MoreTools.Commands
                     State = CommandResultState.Error
                 };
 
+            if(context.Arguments.Count > 3)
+                name = context.Arguments.At(3);
+
+
             foreach (var ply in players)
                 for (int i = 0; i < amount; i++)
                 {
                     var pos = ply.Position;
                     pos.y += 2;
-                    new Synapse.Api.Ragdoll((RoleType)role, pos, ply.transform.rotation, UnityEngine.Vector3.zero, new PlayerStats.HitInfo(), false, ply.NickName);
+                    new Synapse.Api.Ragdoll((RoleType)role, name, pos, ply.transform.rotation, DamageType.Unknown);
                 }
 
             return new CommandResult
