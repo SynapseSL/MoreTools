@@ -1,43 +1,41 @@
-﻿using Synapse.Command;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Hint",
+    Aliases = new[] { "HintDisplay", "hd" },
+    Description = "A Command to give all Players a Hint Message",
+    Permission = "moretools.hint",
+    Platforms = new[] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Time", "Message" }
+)]
+public class Hint : PlayerCommand
 {
-    [CommandInformation(
-        Name = "Hint",
-        Aliases = new string[] { "HintDisplay","hd" },
-        Description = "A Command to give all Players a Hint Message",
-        Permission = "moretools.hint",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "hint time message",
-        Arguments = new[] { "Time", "Message" }
-        )]
-    public class Hint : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 2)
         {
-            if (context.Arguments.Count < 2)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter! Usage: hint time message",
-                    State = CommandResultState.Error
-                };
-
-            if (!float.TryParse(context.Arguments.FirstElement(), out var time))
-                return new CommandResult
-                {
-                    Message = "Invalid parameter for time",
-                    State = CommandResultState.Error
-                };
-
-            var msg = string.Join(" ", context.Arguments.Segment(1));
-            foreach (var ply in Synapse.Server.Get.Players)
-                ply.GiveTextHint(msg, time);
-
-            return new CommandResult
-            {
-                Message = "Hint was send",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter! Usage: hint time message";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!float.TryParse(context.Arguments[0], out var time))
+        {
+            result.Response = "Invalid parameter for time";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
+        }
+
+        var msg = string.Join(" ", context.Arguments.Segment(1));
+        foreach (var ply in PlayerService.Players)
+            ply.SendHint(msg, time);
+
+        result.Response = "Hint was send";
     }
 }

@@ -1,54 +1,52 @@
-﻿using Synapse.Command;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "PrivateBroadcast",
+    Aliases = new[] { "pbc", "pbroadcast" },
+    Description = "A Command which sends a Broadcast to specific players",
+    Permission = "moretools.pbc",
+    Platforms = new[] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Players", "Time", "Message" }
+)]
+public class PrivateBroadcast : PlayerCommand
 {
-    [CommandInformation(
-        Name = "PrivateBroadcast",
-        Aliases = new string[] { "pbc","pbroadcast" },
-        Description = "A Command which sends a Broadcast to specific players",
-        Permission = "moretools.pbc",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "pbc players time message",
-        Arguments = new[] { "Players", "Time", "Message" }
-        )]
-    public class PrivateBroadcast : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 3)
         {
-            if (context.Arguments.Count < 3)
-                return new CommandResult
-                {
-                    Message = "Missing Parameters! Usage: pbc players time message",
-                    State = CommandResultState.Error
-                };
-
-            if (!Extensions.TryGetPlayers(context.Arguments.FirstElement(), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found",
-                    State = CommandResultState.Error
-                };
-
-            if (!ushort.TryParse(context.Arguments.At(1), out var time))
-                return new CommandResult
-                {
-                    Message = "Invalid time amount",
-                    State = CommandResultState.Error
-                };
-
-            var msg = string.Join(" ", context.Arguments.Segment(2));
-
-            foreach (var player in players)
-            {
-                player.SendBroadcast(time, msg);
-                player.GiveTextHint($"Private broadcast was send by {context.Player}");
-            }
-
-            return new CommandResult
-            {
-                Message = "private broadcast was send",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameters! Usage: pbc players time message";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+        {
+            result.Response = "No Player was found";
+            result.StatusCode = CommandStatusCode.NotFound;
+            return;
+        }
+
+        if (!ushort.TryParse(context.Arguments[1], out var time))
+        {
+            result.Response = "Invalid time amount";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
+        }
+
+        var msg = string.Join(" ", context.Arguments.Segment(2));
+
+        foreach (var player in players)
+        {
+            player.SendBroadcast(msg, time);
+            player.SendHint($"Private broadcast was send by {context.Player}");
+        }
+
+        result.Response = "Private broadcast was send";
     }
-}
+};

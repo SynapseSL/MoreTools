@@ -1,50 +1,47 @@
-﻿using Synapse.Command;
+﻿using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
 
 namespace MoreTools.Commands
 {
-    [CommandInformation(
-        Name = "Teleport",
-        Aliases = new string[] { "tp" },
+    [SynapseRaCommand(
+        CommandName = "Teleport",
+        Aliases = new[] { "tp" },
         Description = "brings players to a specific player",
         Permission = "moretools.tp",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "tp players player",
-        Arguments = new[] { "Players", "Player" }
+        Platforms = new [] { CommandPlatform.RemoteAdmin,CommandPlatform.ServerConsole },
+        Parameters = new[] { "Players", "Player" }
         )]
-    public class Teleport : ISynapseCommand
+    public class Teleport : PlayerCommand
     {
-        public CommandResult Execute(CommandContext context)
+        public override void Execute(SynapseContext context, ref CommandResult result)
         {
-            if (context.Arguments.Count < 2)
-                return new CommandResult
-                {
-                    Message = "Missing Parameters! Usage: tp players player",
-                    State = CommandResultState.Error
-                };
+            if (context.Arguments.Length < 2)
+            {
+                result.Response = "Missing Parameters! Usage: tp players player";
+                result.StatusCode = CommandStatusCode.BadSyntax;
+                return;
+            }
 
-            if (!Extensions.TryGetPlayers(context.Arguments.FirstElement(), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found",
-                    State = CommandResultState.Error
-                };
+            if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+            {
+                result.Response = "No Player was found";
+                result.StatusCode = CommandStatusCode.NotFound;
+                return;
+            }
 
-            var player = SynapseController.Server.GetPlayer(context.Arguments.At(1));
+            var player = PlayerService.GetPlayer(context.Arguments[1]);
             if (player == null)
-                return new CommandResult
-                {
-                    Message = "No player to tp to was found",
-                    State = CommandResultState.Error
-                };
+            {
+                result.Response = "No player to tp to was found";
+                result.StatusCode = CommandStatusCode.NotFound;
+                return;
+            }
 
             foreach (var ply in players)
                 ply.Position = player.Position;
 
-            return new CommandResult
-            {
-                Message = "All players have been tp't to the player",
-                State = CommandResultState.Ok
-            };
+            result.Response = "All players have been teleported to the player";
         }
     }
 }

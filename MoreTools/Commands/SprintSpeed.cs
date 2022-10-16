@@ -1,43 +1,47 @@
-﻿using Synapse.Api;
-using Synapse.Command;
-using System.Linq;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
+using Synapse3.SynapseModule.Map;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "SprintSpeed",
+    Aliases = new[] { "ss" },
+    Description = "A Command to change the SprintSpeed of all Players",
+    Permission = "moretools.sprintspeed",
+    Platforms = new [] { CommandPlatform.RemoteAdmin,CommandPlatform.ServerConsole },
+    Parameters = new[] { "Speed" }
+)]
+public class SprintSpeed : SynapseCommand
 {
-    [CommandInformation(
-        Name = "SprintSpeed",
-        Aliases = new string[] { "ss" },
-        Description = "A Command to change the SprintSpeed of all Players",
-        Permission = "moretools.sprintspeed",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Walkspeed (speed)",
-        Arguments = new[] { "Speed" }
-        )]
-    public class SprintSpeed : ISynapseCommand
+    private readonly MapService _map;
+
+    public SprintSpeed(MapService map)
     {
-        public CommandResult Execute(CommandContext context)
+        _map = map;
+    }
+    
+    public override void Execute(SynapseContext context, ref CommandResult result)
+    {
+        if (context.Arguments.Length < 1)
         {
-            if (context.Arguments.Count < 1)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter. Usage: Sprintspeed speed",
-                    State = CommandResultState.Error
-                };
-
-            if (!float.TryParse(context.Arguments.First(), out var speed))
-                return new CommandResult
-                {
-                    Message = "Invalid Speed",
-                    State = CommandResultState.Error
-                };
-
-            Map.Get.SprintSpeed = speed;
-
-            return new CommandResult
-            {
-                Message = "SprintSpeed was changed!",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter. Usage: Sprintspeed speed";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!float.TryParse(context.Arguments[0], out var speed))
+        {
+            result.Response = "Invalid Speed";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
+        }
+
+        _map.HumanSprintSpeed = speed;
+
+        result.Response = "SprintSpeed was changed!";
     }
 }

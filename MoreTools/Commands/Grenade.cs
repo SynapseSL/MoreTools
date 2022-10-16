@@ -1,55 +1,54 @@
-﻿using Synapse.Command;
-using UnityEngine;
-using Synapse.Api;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
+using Synapse3.SynapseModule.Item;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Grenade",
+    Aliases = new[] { "gn" },
+    Description = "Spawns grenades at the player location",
+    Permission = "moretools.grenade",
+    Platforms = new[] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Players", "(Amount)" }
+)]
+public class Grenade : PlayerCommand
 {
-    [CommandInformation(
-        Name = "Grenade",
-        Aliases = new string[] { "gn" },
-        Description = "Spawns grenades at the player location",
-        Permission = "moretools.grenade",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Grenade players (optional amount)",
-        Arguments = new[] { "Players", "(Amount)" }
-        )]
-    public class Grenade : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 1)
         {
-            if (context.Arguments.Count < 1)
-                return new CommandResult
-                {
-                    Message = "Usage: Grenade players (optional amount)",
-                    State = CommandResultState.Error
-                };
-
-            if (context.Arguments.Count < 2)
-                context.Arguments = new System.ArraySegment<string>(new[] { context.Arguments.At(0), "1" });
-
-            if (!Extensions.TryGetPlayers(context.Arguments.At(0), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found",
-                    State = CommandResultState.Error
-                };
-
-            if (!int.TryParse(context.Arguments.At(1), out var amount))
-                return new CommandResult
-                {
-                    Message = "Invalid Amount of grenades",
-                    State = CommandResultState.Error
-                };
-
-            foreach (var player in players)
-                for (int i = 0; i < amount; i++)
-                    Map.Get.SpawnGrenade(player.Position, Vector3.zero,3,Synapse.Api.Enum.GrenadeType.Grenade,context.Player);
-
-            return new CommandResult
-            {
-                Message = "Grenades are spawned",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Usage: grenade players (optional amount)";
+            result.StatusCode = CommandStatusCode.Error;
+            return;
         }
+
+        if (context.Arguments.Length < 2)
+            context.Arguments = new[] { context.Arguments[0], "1" };
+
+        if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+        {
+            result.Response = "No Player was found";
+            result.StatusCode = CommandStatusCode.NotFound;
+            return;
+        }
+
+        if (!int.TryParse(context.Arguments[1], out var amount))
+        {
+            result.Response = "Invalid Amount";
+            return;
+        }
+
+        foreach (var player in players)
+            for (int i = 0; i < amount; i++)
+            {
+                var item = new SynapseItem(ItemType.GrenadeHE, player.Position);
+                item.Throwable.Fuse(player);
+            }
+
+        result.Response = "Grenade was spawned";
     }
 }

@@ -1,25 +1,22 @@
-﻿using Synapse.Command;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Synapse3.SynapseModule.Command;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Suicide",
+    Aliases = new[] { "si" },
+    Description = "A Command to kill yourself",
+    Permission = "moretools.suicide",
+    Platforms = new[] { CommandPlatform.PlayerConsole }
+)]
+public class Suicide : SynapseCommand
 {
-    [CommandInformation(
-        Name = "Suicide",
-        Aliases = new string[] { "si" },
-        Description = "A Command to kill yourself",
-        Permission = "moretools.suicide",
-        Platforms = new Platform[] { Platform.ClientConsole },
-        Usage = ".suicide ... thats it"
-        )]
-    public class Suicide : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
-        {
-            context.Player.Kill();
-            return new CommandResult
-            {
-                Message = "You have killed yourself",
-                State = CommandResultState.Ok
-            };
-        }
+        context.Player.Kill();
+        result.Response = "You have killed yourself";
     }
-}
+};

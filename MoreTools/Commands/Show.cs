@@ -1,43 +1,41 @@
-﻿using Synapse.Command;
-using System.Linq;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
+using Synapse3.SynapseModule.Enums;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Show",
+    Aliases = new string[] { },
+    Description = "A Command to make Players Visible again",
+    Permission = "moretools.invisible",
+    Platforms = new [] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Players" }
+)]
+public class Show : PlayerCommand
 {
-    [CommandInformation(
-        Name = "Show",
-        Aliases = new string[] { },
-        Description = "A Command to make Players Visible again",
-        Permission = "moretools.invisible",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "show players",
-        Arguments = new[] { "Players" }
-        )]
-    public class Show : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 1)
         {
-            if (context.Arguments.Count < 1)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter! Usage: show players",
-                    State = CommandResultState.Error
-                };
-
-            if (!Extensions.TryGetPlayers(context.Arguments.First(), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found",
-                    State = CommandResultState.Error
-                };
-
-            foreach (var player in players)
-                player.Invisible = false;
-
-            return new CommandResult
-            {
-                Message = "The Players are now Visible again",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter! Usage: show players";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+        {
+            result.Response = "No Player was found";
+            result.StatusCode = CommandStatusCode.NotFound;
+            return;
+        }
+
+        foreach (var player in players)
+            player.Invisible = InvisibleMode.None;
+
+        result.Response = "The Players are now Visible again";
     }
 }

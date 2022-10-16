@@ -1,44 +1,42 @@
-﻿using Synapse.Command;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Window",
+    Aliases = new[] { "reportwindow" },
+    Description = "Opens the Report Window with a a Custom Message",
+    Permission = "moretools.window",
+    Platforms = new[] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Players", "Message" }
+)]
+public class Window : PlayerCommand
 {
-    [CommandInformation(
-        Name = "Window",
-        Aliases = new string[] { "reportwindow" },
-        Description = "Opens the Report Window with a a Custom Message",
-        Permission = "moretools.window",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Window players Message",
-        Arguments = new[] { "Players", "Message"}
-        )]
-    public class Window : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 2)
         {
-            if (context.Arguments.Count < 2)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter. Usage: Window players Message",
-                    State = CommandResultState.Error
-                };
-
-            if (!Extensions.TryGetPlayers(context.Arguments.At(0), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found",
-                    State = CommandResultState.Error
-                };
-
-            var message = string.Join(" ", context.Arguments.Segment(1));
-
-            foreach (var player in players)
-                player.OpenReportWindow(message);
-
-            return new CommandResult
-            {
-                Message = "Message was send",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter. Usage: Window players Message";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+        {
+            result.Response = "No Player was found";
+            result.StatusCode = CommandStatusCode.NotFound;
+            return;
+        }
+
+        var message = string.Join(" ", context.Arguments.Segment(1));
+
+        foreach (var player in players)
+            player.SendWindowMessage(message);
+
+        result.Response = "Message was send";
     }
 }

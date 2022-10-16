@@ -1,30 +1,24 @@
-﻿using Synapse.Command;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Synapse3.SynapseModule.Command;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "Nick",
+    Aliases = new[] { "NickName" },
+    Description = "A Command to change your Nickname",
+    Permission = "moretools.nick",
+    Platforms = new[] { CommandPlatform.PlayerConsole, CommandPlatform.RemoteAdmin },
+    Parameters = new[] { "Nickname" }
+)]
+public class Nick : SynapseCommand
 {
-    [CommandInformation(
-        Name = "Nick",
-        Aliases = new string[] { "NickName" },
-        Description = "A Command to change your Nickname",
-        Permission = "moretools.nick",
-        Platforms = new Platform[] { Platform.ClientConsole },
-        Usage = ".nick nickname",
-        Arguments = new[] { "Nickname" }
-        )]
-    public class Nick : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
-        {
-            var result = new CommandResult();
-
-            var nick = string.Join(" ", context.Arguments);
-            context.Player.DisplayName = nick;
-            if (context.Arguments.Count > 0)
-                result.Message = $"Your Nickname is now {nick}";
-            else
-                result.Message = "Your Nickname has been removed!";
-            result.State = CommandResultState.Ok;
-            return result;
-        }
+        var nick = string.Join(" ", context.Arguments);
+        context.Player.DisplayName = nick;
+        result.Response = context.Arguments.Length > 0 ? $"Your Nickname is now {nick}" : "Your Nickname has been removed!";
     }
 }

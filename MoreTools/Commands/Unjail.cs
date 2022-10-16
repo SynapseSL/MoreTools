@@ -1,43 +1,46 @@
-﻿using Synapse.Command;
-using System.Linq;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
+using Synapse3.SynapseModule.Config;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "UnJail",
+    Aliases = new string[] { },
+    Description = "A Command for unjailing Players",
+    Permission = "moretools.jail",
+    Platforms = new [] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Players" }
+)]
+public class UnJail : PlayerCommand
 {
-    [CommandInformation(
-        Name = "UnJail",
-        Aliases = new string[] { },
-        Description = "A Command for unjailing Players",
-        Permission = "moretools.jail",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "unjail players",
-        Arguments = new[] { "Players" }
-        )]
-    public class UnJail : ISynapseCommand
+    public override void Execute(SynapseContext context, ref CommandResult result)
     {
-        public CommandResult Execute(CommandContext context)
+        if (context.Arguments.Length < 1)
         {
-            if (context.Arguments.Count < 1)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter! Usage: Unjail players",
-                    State = CommandResultState.Error
-                };
-
-            if (!Extensions.TryGetPlayers(context.Arguments.First(), context.Player, out var players))
-                return new CommandResult
-                {
-                    Message = "No Player was found!",
-                    State = CommandResultState.Error
-                };
-
-            foreach (var player in players)
-                player.Jail.UnJailPlayer();
-
-            return new CommandResult
-            {
-                Message = "Players are unjailed",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter! Usage: Unjail players";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!PlayerService.TryGetPlayers(context.Arguments[0], out var players, context.Player))
+        {
+            result.Response = "No Player was found!";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
+        }
+
+        foreach (var player in players)
+        {
+            if (!player.Data.ContainsKey("jail")) continue;
+            if (player.Data["jail"] is not SerializedPlayerState state) continue;
+            player.State = state;
+            player.Data.Remove("jail");
+        }
+
+        result.Response = "Players were unjailed";
     }
 }

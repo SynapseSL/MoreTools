@@ -1,43 +1,47 @@
-﻿using Synapse.Api;
-using Synapse.Command;
-using System.Linq;
+﻿using Neuron.Core.Meta;
+using Neuron.Modules.Commands;
+using Neuron.Modules.Commands.Command;
+using Synapse3.SynapseModule.Command;
+using Synapse3.SynapseModule.Map;
 
-namespace MoreTools.Commands
+namespace MoreTools.Commands;
+
+[Automatic]
+[SynapseRaCommand(
+    CommandName = "WalkSpeed",
+    Aliases = new[] { "ws" },
+    Description = "A Command to change the WalkSpeed of all Players",
+    Permission = "moretools.walkspeed",
+    Platforms = new[] { CommandPlatform.RemoteAdmin, CommandPlatform.ServerConsole },
+    Parameters = new[] { "Speed" }
+)]
+public class WalkSpeed : SynapseCommand
 {
-    [CommandInformation(
-        Name = "WalkSpeed",
-        Aliases = new string[] { "ws" },
-        Description = "A Command to change the WalkSpeed of all Players",
-        Permission = "moretools.walkspeed",
-        Platforms = new Platform[] { Platform.RemoteAdmin, Platform.ServerConsole },
-        Usage = "Walkspeed (speed)",
-        Arguments = new[] { "Speed" }
-        )]
-    public class WalkSpeed : ISynapseCommand
+    private readonly MapService _map;
+
+    public WalkSpeed(MapService map)
     {
-        public CommandResult Execute(CommandContext context)
+        _map = map;
+    }
+
+    public override void Execute(SynapseContext context, ref CommandResult result)
+    {
+        if (context.Arguments.Length < 1)
         {
-            if (context.Arguments.Count < 1)
-                return new CommandResult
-                {
-                    Message = "Missing Parameter. Usage: Walkspeed speed",
-                    State = CommandResultState.Error
-                };
-
-            if (!float.TryParse(context.Arguments.First(), out var speed))
-                return new CommandResult
-                {
-                    Message = "Invalid Speed",
-                    State = CommandResultState.Error
-                };
-
-            Map.Get.WalkSpeed = speed;
-
-            return new CommandResult
-            {
-                Message = "WalkSpeed was changed!",
-                State = CommandResultState.Ok
-            };
+            result.Response = "Missing Parameter. Usage: Walkspeed speed";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
         }
+
+        if (!float.TryParse(context.Arguments[0], out var speed))
+        {
+            result.Response = "Invalid Speed";
+            result.StatusCode = CommandStatusCode.BadSyntax;
+            return;
+        }
+
+        _map.HumanSprintSpeed = speed;
+
+        result.Response = "Walkspeed was changed!";
     }
 }
