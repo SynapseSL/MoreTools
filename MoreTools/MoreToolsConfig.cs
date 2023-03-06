@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Neuron.Core.Meta;
+using PlayerRoles;
 using Syml;
 using Synapse3.SynapseModule.Config;
 using Synapse3.SynapseModule.Map.Rooms;
@@ -16,8 +17,8 @@ public class MoreToolsConfig : IDocumentSection
         new SerializedPlayerState()
         {
             Position = new RoomPoint("Surface", new Vector3(53.68f, 19.42f, -44.23f), Vector3.zero),
-            RoleType = RoleType.Tutorial,
-            RoleID = (uint)RoleType.Tutorial
+            RoleType = RoleTypeId.Tutorial,
+            RoleID = (uint)RoleTypeId.Tutorial
         }
     };
 }

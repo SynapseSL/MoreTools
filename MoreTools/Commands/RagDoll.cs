@@ -1,6 +1,7 @@
 ﻿using Neuron.Core.Meta;
 using Neuron.Modules.Commands;
 using Neuron.Modules.Commands.Command;
+using PlayerRoles;
 using Synapse3.SynapseModule.Command;
 using Synapse3.SynapseModule.Enums;
 using Synapse3.SynapseModule.Map.Objects;
@@ -67,7 +68,7 @@ public class RagDoll : PlayerCommand
             
             for (int i = 0; i < amount; i++)
             {
-                _ = new SynapseRagdoll((RoleType)role, DamageType.Unknown, pos, ply.Rotation, ply.Scale, name);
+                _ = new SynapseRagDoll((RoleTypeId)role, pos, ply.Rotation, ply.Scale, ply, DamageType.Unknown, name);
             }
         }
 
